@@ -44,6 +44,7 @@ public class AuthRestService {
     @Path("/login")
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @PermitAll
     public Response login(@FormParam("login") String login, @FormParam("password") String password) {
       final String token = new EncodedJwtToken(Secret).issue("Cyf", login, now().plusMinutes(4));
       return Response.ok(token)

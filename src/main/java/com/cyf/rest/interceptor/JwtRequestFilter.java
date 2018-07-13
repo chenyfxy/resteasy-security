@@ -1,14 +1,17 @@
 package com.cyf.rest.interceptor;
 
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 
 import javax.annotation.Priority;
+import javax.annotation.security.PermitAll;
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.ext.Provider;
 
 import org.jboss.resteasy.core.Headers;
+import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
 
 import com.auth0.jwt.JWT;
@@ -28,6 +31,13 @@ public final class JwtRequestFilter implements ContainerRequestFilter {
 			"Access denied for this resource", 401, new Headers<Object>());
 
 	public void filter(ContainerRequestContext request) {
+		ResourceMethodInvoker methodInvoker = (ResourceMethodInvoker) request.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
+		Method method = methodInvoker.getMethod();
+		
+		//Access allowed for all
+		if (method.isAnnotationPresent(PermitAll.class)) {
+			return;
+		}
 		final String authorization = request.getHeaderString(AUTHORIZATION);
 
 		if (authorization == null) {
