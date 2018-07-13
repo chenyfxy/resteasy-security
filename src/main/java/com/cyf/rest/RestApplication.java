@@ -6,13 +6,16 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 import com.cyf.rest.interceptor.AuthorizationRequestFilter;
+import com.cyf.rest.interceptor.JwtRequestFilter;
 
 public class RestApplication extends Application {
 
 	Set<Object> singletons = new HashSet<Object>();
 	
 	public RestApplication() {
-		this.singletons.add(new AuthorizationRequestFilter());
+//		this.singletons.add(new AuthorizationRequestFilter());
+		
+		this.singletons.add(new JwtRequestFilter());
 		
 		this.singletons.add(new HelloRestService());
 		this.singletons.add(new AuthRestService());
