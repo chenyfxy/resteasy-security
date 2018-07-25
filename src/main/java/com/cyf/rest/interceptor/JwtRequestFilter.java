@@ -15,6 +15,7 @@ import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.impl.PublicClaims;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.cyf.rest.utils.JwtSign;
 import com.cyf.rest.utils.JwtToken;
@@ -62,8 +63,8 @@ public final class JwtRequestFilter implements ContainerRequestFilter {
 
 			request.getHeaders().putSingle(AUTHORIZATION, "Bearer " + newJwt);
 		} else {
-			System.out.println(jwt.getClaim("refreshToken").asString());
-			System.out.println(jwt.getClaim("refreshExpire").asDate());
+			System.out.println("auth:" + jwt.getClaim(PublicClaims.AUDIENCE).asString());
+			System.out.println("refreshExpire:" + jwt.getClaim("refreshExpire").asDate());
 		}
 	}
 }
